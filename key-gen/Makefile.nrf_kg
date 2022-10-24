@@ -1,0 +1,85 @@
+
+
+CFLAGS += -DNRF_CRYPTO_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_AES_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_AEAD_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_RNG_STATIC_MEMORY_BUFFERS_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_RNG_AUTO_INIT_ENABLED=1
+CFLAGS += -DNRFX_RNG_ENABLED=1
+
+
+CFLAGS += -DNRF_CRYPTO_CC310_AES_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_ECC_SECP256R1_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_AES_CTR_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_CHACHA_POLY_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_AES_CCM_STAR_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_AES_CCM_ENABLED=1
+##CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_RNG_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_NRF_HW_RNG_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_HASH_SHA256_ENABLED=1
+CFLAGS += -DNRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED=1
+
+CFLAGS += -DNRF_CRYPTO_HASH_ENABLED=1
+
+
+TARGET_LIBFILES += $(NRF5_SDK_ROOT)/../nrf_cc310/lib/cortex-m4/hard-float/libnrf_cc310_0.9.12.a
+
+
+
+CFLAGS += -DNRFX_RNG_CONFIG_ERROR_CORRECTION=1 
+CFLAGS += -DRNG_CONFIG_ERROR_CORRECTION=1
+
+
+
+NRF52_SDK_C_SRCS += \
+                    components/libraries/crypto/nrf_crypto_init.c \
+					components/libraries/crypto/nrf_crypto_aes.c \
+					components/libraries/crypto/nrf_crypto_error.c \
+					components/libraries/atomic/nrf_atomic.c \
+					components/libraries/crypto/nrf_crypto_aead.c \
+					components/libraries/crypto/nrf_crypto_rng.c \
+                    components/libraries/crypto/nrf_crypto_ecc.c \
+                    components/libraries/crypto/nrf_crypto_ecdh.c \
+                    components/libraries/crypto/backend/cc310/cc310_backend_aes.c \
+                    ccomponents/libraries/crypto/backend/cc310/cc310_backend_aes_aead.c \
+                    components/libraries/crypto/backend/cc310/cc310_backend_shared.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_mutex.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_chacha_poly_aead.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_ecc.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_ecdh.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_ecdsa.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_eddsa.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_hash.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_hmac.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_init.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_rng.c \
+					components/libraries/crypto/backend/cc310/cc310_backend_hash.c \
+                    components/libraries/crypto/backend/nrf_hw/nrf_hw_backend_rng.c \
+                    components/libraries/crypto/nrf_crypto_hash.c
+
+NRF52_SDK_INC_PATHS += ../nrf_cc310/include
+NRF52_SDK_INC_PATHS += components/libraries/crypto
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/cc310/
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/cc310_bl
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/cifra
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/mbedtls
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/micro_ecc
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/nrf_hw
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/nrf_sw
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/oberon
+NRF52_SDK_INC_PATHS += components/libraries/crypto/backend/optiga
+NRF52_SDK_INC_PATHS += components/libraries/mem_manager
+NRF52_SDK_INC_PATHS += components/libraries/mutex
+NRF52_SDK_INC_PATHS += components/libraries/atomic
+NRF52_SDK_INC_PATHS += components/libraries/stack_info
+NRF52_SDK_INC_PATHS += components/libraries/util
+NRF52_SDK_INC_PATHS += components/boards
+
+NRF52_SDK_INC_PATHS += modules/nrfx/mdk
+NRF52_SDK_INC_PATHS += modules/nrfx/hal
+
+
+    
+
