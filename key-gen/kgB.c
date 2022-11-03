@@ -45,7 +45,6 @@ static void udp_rx_callback(struct simple_udp_connection *c,
 
 	readMessage((uint8_t *)data, datalen, sender_addr);
 
-	setOtherSideConnected(1);
 }
 
 

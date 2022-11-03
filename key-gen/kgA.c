@@ -70,15 +70,10 @@ PROCESS_THREAD(udp_client_process, ev, data)
 				dest_addr_set = 1;
 			}
 
-			//LOG_INFO("reach\n");
-
-			setOtherSideConnected(1);
 			KG_sm_A();
-
 		}
 		else
 		{
-			setOtherSideConnected(0);
 			LOG_INFO("Not reach\n");
 		}
 		

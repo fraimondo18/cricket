@@ -24,42 +24,23 @@
 
 
 #ifndef KG_RSSI_COLLECT
-/*int8_t rssi_data_test[1024] = {
-		-70, -70, -69, -67, -66, -66, -69, -64, -70, -71, -64, -66, -71, -67, -66, -64, -80, -70, -66, -71, -70, -71, -70, -71, -67, -64, -64, -64, -65, -64, -76, -74, -64, -72, -67, -64, -65,
-		-61, -64, -70, -68, -65, -69, -61, -63, -59, -70, -67, -70, -74, -64, -62, -61, -62, -67, -64, -63, -66, -61, -61, -66, -63, -63, -65, -70, -63, -69, -64, -64, -71, -73, -67, -70, -66,
-		-70, -73, -70, -67, -71, -69, -70, -70, -68, -78, -67, -71, -70, -73, -70, -71, -70, -68, -65, -68, -68, -67, -67, -70, -67, -72, -67, -67, -67, -65, -64, -71, -68, -67, -83, -82, -66,
-		-69, -68, -64, -64, -68, -68, -70, -68, -72, -70, -67, -75, -68, -69, -72, -65, -71, -64, -66, -64, -74, -67, -73, -64, -66, -67, -68, -71, -70, -65, -66, -64, -64, -74, -64, -64, -62,
-		-67, -61, -63, -64, -63, -67, -64, -62, -63, -64, -62, -68, -64, -72, -70, -65, -69, -65, -68, -64, -67, -67, -65, -65, -64, -67, -70, -65, -64, -66, -67, -68, -71, -72, -70, -70, -72,
-		-69, -66, -67, -69, -70, -70, -71, -64, -67, -64, -64, -65, -69, -63, -64, -64, -66, -63, -67, -66, -64, -64, -64, -64, -66, -66, -65, -65, -64, -64, -64, -66, -66, -65, -70, -64, -66,
-		-61, -62, -64, -64, -66, -73, -66, -69, -68, -67, -67, -67, -66, -65, -66, -67, -65, -66, -67, -65, -66, -65, -65, -65, -64, -64, -64, -65, -66, -65, -65, -66, -67, -67, -66, -66, -67,
-		-66, -67, -70, -67, -66, -67, -67, -66, -66, -69, -66, -65, -67, -65, -65, -66, -67, -66, -67, -67, -66, -65, -66, -65, -65, -65, -66, -64, -65, -65, -65, -66, -68, -70, -70, -70, -70,
-		-68, -69, -70, -69, -70, -70, -69, -69, -69, -69, -70, -70, -70, -68, -66, -67, -67, -67, -67, -67, -67, -67, -67, -67, -68, -67, -67, -68, -68, -69, -69, -69, -68, -70, -67, -68, -69,
-		-68, -69, -66, -66, -65, -66, -66, -67, -68, -67, -70, -70, -71, -71, -69, -65, -67, -66, -66, -66, -67, -66, -66, -67, -67, -67, -67, -67, -68, -66, -66, -66, -66, -66, -66, -67, -67,
-		-67, -68, -70, -70, -68, -67, -67, -67, -67, -70, -66, -67, -70, -69, -69, -66, -67, -67, -68, -67, -67, -68, -67, -67, -67, -66, -65, -66, -67, -67, -69, -66, -67, -65, -69, -74, -70,
-		-76, -67, -70, -67, -65, -64, -67, -69, -70, -66, -70, -67, -69, -66, -67, -67, -63, -67, -70, -68, -68, -69, -68, -70, -67, -69, -70, -72, -72, -70, -73, -71, -76, -71, -70, -69, -72,
-		-69, -67, -70, -69, -72, -67, -70, -69, -68, -68, -69, -68, -70, -67, -67, -68, -67, -68, -68, -68, -69, -70, -70, -67, -70, -70, -66, -66, -64, -65, -65, -64, -65, -67, -66, -66, -67,
-		-67, -65, -65, -65, -64, -65, -67, -65, -65, -64, -67, -67, -69, -68, -70, -69, -68, -69, -68, -66, -66, -64, -67, -66, -67, -67, -70, -68, -67, -64, -73, -70, -59, -59, -65, -64, -61,
-		-66, -63, -61, -61, -61, -63, -62, -64, -67, -69, -64, -65, -63, -61, -63, -64, -67, -65, -63, -65, -66, -66, -59, -65, -61, -66, -59, -60, -60, -59, -59, -60, -62, -63, -62, -61, -59,
-		-65, -61, -68, -65, -67, -73, -64, -59, -67, -65, -76, -66, -63, -61, -65, -65, -64, -64, -64, -68, -66, -64, -66, -61, -63, -64, -63, -63, -62, -61, -63, -64, -64, -61, -61, -63, -62,
-		-63, -65, -65, -64, -64, -65, -67, -66, -65, -63, -61, -61, -65, -64, -63, -62, -62, -64, -63, -62, -61, -64, -62, -64, -62, -63, -61, -61, -62, -62, -62, -63, -63, -62, -62, -65, -62,
-		-64, -62, -62, -64, -66, -63, -64, -64, -64, -65, -64, -64, -63, -64, -65, -64, -65, -66, -65, -64, -64, -64, -64, -65, -64, -64, -64, -63, -63, -62, -63, -64, -64, -64, -64, -62, -63,
-		-62, -61, -61, -63, -63, -62, -64, -65, -65, -63, -64, -64, -64, -64, -64, -65, -64, -64, -63, -64, -64, -64, -64, -64, -64, -64, -63, -63, -64, -65, -63, -64, -64, -64, -63, -64, -64,
-		-64, -63, -62, -63, -61, -61, -61, -62, -64, -63, -61, -61, -62, -61, -61, -64, -64, -61, -62, -61, -62, -64, -63, -63, -63, -64, -64, -64, -63, -62, -63, -63, -63, -63, -63, -63, -62,
-		-63, -62, -62, -62, -64, -64, -63, -64, -64, -64, -64, -64, -64, -64, -64, -64, -63, -61, -62, -61, -62, -62, -63, -62, -62, -62, -62, -63, -64, -63, -62, -63, -64, -64, -63, -63, -64,
-		-64, -64, -64, -63, -64, -64, -64, -64, -64, -64, -64, -64, -63, -64, -64, -64, -64, -64, -64, -64, -64, -63, -64, -64, -64, -64, -63, -63, -63, -63, -62, -62, -62, -63, -62, -63, -62,
-		-63, -63, -64, -63, -63, -63, -64, -63, -64, -64, -64, -64, -64, -64, -64, -64, -63, -63, -63, -63, -63, -63, -63, -63, -63, -62, -62, -62, -63, -64, -64, -64, -63, -63, -63, -63, -62,
-		-63, -63, -63, -63, -63, -64, -63, -63, -64, -64, -64, -64, -63, -64, -64, -64, -64, -63, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64, -64,
-		-64, -64, -66, -64, -61, -64, -64, -65, -64, -63, -64, -63, -64, -63, -64, -64, -64, -64, -64, -63, -64, -64, -63, -64, -63, -64, -64, -64, -64, -64, -65, -63, -67, -67, -61, -65, -63,
-		-64, -61, -63, -62, -64, -59, -64, -61, -61, -62, -60, -61, -62, -60, -63, -62, -61, -61, -64, -64, -63, -61, -67, -62, -68, -69, -70, -65, -63, -64, -67, -61, -63, -64, -61, -61, -62,
-		-61, -65, -62, -65, -64, -65, -63, -61, -63, -62, -64, -64, -63, -66, -62, -66, -62, -68, -59, -61, -70, -64, -63, -61, -59, -61, -64, -66, -64, -70, -69, -64, -66, -61, -61, -61, -66,
-		-74, -69, -64, -66, -61, -61, -61, -66, -74, -69, -64, -66, -61, -61, -61, -66, -74, -69, -64, -66, -61, -61, -61, -66, -74};*/
 
-const int8_t rssi_data_test[100] = {
+const int8_t rssi_data_test[256] = {
 		-70, -70, -69, -67, -66, -66, -69, -64, -70, -71, -64, -66, -71, -67, -66, -64, -80, -70, -66, -71,
 		-70, -71, -70, -71, -67, -64, -64, -64, -65, -64, -76, -74, -64, -72, -67, -64, -65, -61, -64, -70,
 		-68, -65, -69, -61, -63, -59, -70, -67, -70, -74, -64, -62, -61, -62, -67, -64, -63, -66, -61, -61,
 		-66, -63, -63, -65, -70, -63, -69, -64, -64, -71, -73, -67, -70, -66, -70, -73, -70, -67, -71, -69,
-		-70, -70, -68, -78, -67, -71, -70, -73, -70, -71, -70, -68, -65, -68, -68, -67, -67, -70, -67, -72};
+		-70, -70, -68, -78, -67, -71, -70, -73, -70, -71, -70, -68, -65, -68, -68, -67, -67, -70, -67, -72,
+		-70, -70, -69, -67, -66, -66, -69, -64, -70, -71, -64, -66, -71, -67, -66, -64, -80, -70, -66, -71,
+		-70, -71, -70, -71, -67, -64, -64, -64, -65, -64, -76, -74, -64, -72, -67, -64, -65, -61, -64, -70,
+		-68, -65, -69, -61, -63, -59, -70, -67, -70, -74, -64, -62, -61, -62, -67, -64, -63, -66, -61, -61,
+		-66, -63, -63, -65, -70, -63, -69, -64, -64, -71, -73, -67, -70, -66, -70, -73, -70, -67, -71, -69,
+		-70, -70, -68, -78, -67, -71, -70, -73, -70, -71, -70, -68, -65, -68, -68, -67, -67, -70, -67, -72,
+		-68, -65, -69, -61, -63, -59, -70, -67, -70, -74, -64, -62, -61, -62, -67, -64, -63, -66, -61, -61,
+		-70, -71, -70, -71, -67, -64, -64, -64, -65, -64, -76, -74, -64, -72, -67, -64, -65, -61, -64, -70,
+		66, -63, -63, -65, -70, -63, -69, -64, -64, -71, -73, -67, -70, -66, -70, -73
+};
+
 #endif
 
 
@@ -102,7 +83,14 @@ static kgEncodeParams_t kgEncParams[KG_NUM_ENC_PARAMS] =
 
 
 
-uint8_t kg_m_digest[32];
+
+
+//Only for stats
+static uint32_t total_num_ch_sequences = 0;
+static uint8_t received_ready_key[KG_OUT_KEY_LEN];
+
+
+static uint8_t kg_m_digest[32];
 static uint8_t kg_received_digest[32];
 
 
@@ -111,13 +99,11 @@ static uint8_t kg_received_digest[32];
 static uint16_t kg_mathIndex = 0, kg_varIterations=0;
 static uint8_t kg_currentState;
 
-
+static uint8_t collectRSSI = 0;
 
 /////////////////   MAC layer variables  /////////////////
 static uint16_t rssi_num_samples = 0;
-static uint16_t rssi_block = 0;
 static uint8_t key_gen_head;
-static uint8_t stop_rssi_collection=0;
 
 
 /////////////////   quantization & shuffling /////////////////
@@ -132,7 +118,6 @@ static uint8_t kg_rssi[KG_MAX_RSSI_SAMPLES];
 static float kg_filtered[KG_RSSI_SEQ_LEN];
 static int32_t window_sum = 0;
 static uint8_t values_in_window = 0;
-static uint16_t nn_current_index = 0;
 static float average;
 
 
@@ -181,7 +166,6 @@ static uint8_t sampleSequenceReceived = 0;
 static uint8_t encodeReceived = 0;
 static uint8_t discardReceived = 0;
 static uint8_t hashReceived = 0;
-static uint8_t otherSideConnected = 0;
 
 struct simple_udp_connection kg_udp_conn;
 static uip_ipaddr_t kg_dest_ipaddr;
@@ -201,7 +185,6 @@ uint8_t* KEY=NULL;
 static uint8_t discarded_bits[DISC_BITS_LEN];
 static uint8_t  encoded_message[KG_ENC_LEN];
 static uint8_t  KEY[SOURCE_KEY_LEN];
-//uint16_t disc_bits_msg[(KG_MAX_INIT_KEY_LEN*sizeof(uint16_t))];
 static uint8_t key_stretched[KG_STRETCHED_LEN];
 static uint8_t estimate_key[((KG_MAX_INIT_KEY_LEN/KG_BITS_PU))];
 
@@ -229,7 +212,7 @@ static void print_bin(uint8_t ind) // prints integers in bits in byte chunks
 }
 
 
-static void compareStrings(uint8_t *string1, uint8_t *string2, uint8_t len)
+static uint16_t compareStrings(uint8_t *string1, uint8_t *string2, uint8_t len)
 {
 	uint8_t err_xor, i;
 	uint16_t err_sum = 0;
@@ -253,25 +236,24 @@ static void compareStrings(uint8_t *string1, uint8_t *string2, uint8_t len)
 
 	printf("Number of mismatches %u\n", err_sum);
 
-	return;
+	return err_sum;
 }
 
 
 
 
 #ifndef KG_RSSI_COLLECT
-static void set_rssi_test(uint8_t *data, uint8_t len)
+static void set_rssi_test(uint8_t *data, uint16_t len)
 {
-	uint8_t i;
+	uint16_t i;
 	int8_t r_val;
 
-	for(i=0; i< 100; i++)
+	for(i=0; i< len; i++)
 	{
-		r_val = ((rand() % (7)) / 2);
+		r_val = ((rand() % 3) / 2);
 		if(r_val%2){
 			r_val = (-1) * r_val;
 		}
-
 
 		kg_rssi[i] = (-1)*data[i] + r_val;
 		LOG_DBG("r_val %i, kg_rssi[%u]  %u\n",r_val, i , kg_rssi[i]);
@@ -302,7 +284,7 @@ static void sendMsg(uint8_t msgType, uint8_t *msgOut, uint8_t *inData, uint16_t 
     	break;
     case DATA_TRAFFIC_MSG:
     	msgOut[0] = msgType;
-    	msgOut[1] = (uint8_t)(rssi_num_samples/255);
+    	msgOut[1] = collectRSSI;
     	msgLen = 2;
     	break;
     case DISCARD_MSG:
@@ -346,36 +328,53 @@ static void nearest_neighbor()
 {
     float average_series;
 
-    if (rssi_num_samples < KG_WINDOW_SIZE)
+    if(rssi_num_samples < KG_MAX_RSSI_SAMPLES)
     {
-        return;
+    	return;
     }
 
-    if( nn_current_index < KG_RSSI_SEQ_LEN )
+    kg_varIterations = 0;
+    while(kg_mathIndex<( KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2)))
     {
-        values_in_window += 1;
-        window_sum += (int32_t)kg_rssi[nn_current_index];
-
-        if (nn_current_index >= KG_WINDOW_SIZE)
+        if( kg_mathIndex < KG_RSSI_SEQ_LEN )
         {
-            values_in_window -= 1;
-            window_sum -= (int32_t)kg_rssi[nn_current_index - KG_WINDOW_SIZE];
+            values_in_window += 1;
+            window_sum += (int32_t)kg_rssi[kg_mathIndex];
+
+            if (kg_mathIndex >= KG_WINDOW_SIZE)
+            {
+                values_in_window -= 1;
+                window_sum -= (int32_t)kg_rssi[kg_mathIndex - KG_WINDOW_SIZE];
+            }
         }
+
+        if (kg_mathIndex >= KG_WINDOW_SIZE/2)
+        {
+        	average_series =  ((float) window_sum) / ( (float) values_in_window);
+
+            kg_filtered[kg_mathIndex - (uint16_t)(KG_WINDOW_SIZE/2)] = ((float)kg_rssi[kg_mathIndex-( (uint16_t) (KG_WINDOW_SIZE/2) )]) - average_series;
+            average += kg_filtered[kg_mathIndex - (uint16_t)(KG_WINDOW_SIZE/2)];
+
+          // LOG_INFO("kg_rssi[%u]: %i\n", kg_mathIndex - (uint16_t)(KG_WINDOW_SIZE/2), kg_rssi[kg_mathIndex - (uint16_t)(KG_WINDOW_SIZE/2)]);
+          // LOG_INFO("average_series (*100): %i\n", (int) (average_series * ((float) 100)));
+          // LOG_INFO("filtered value: (*100) %i\n", (int) ( kg_filtered[kg_mathIndex - (uint16_t)(KG_WINDOW_SIZE/2)] * ((float) 100)));
+        }
+
+        kg_mathIndex++;
+
+    	kg_varIterations++;
+    	if(kg_varIterations> KG_MATH_NUM_ITERATIONS)
+    	{
+    		break;
+    	}
     }
 
-    if (nn_current_index >= KG_WINDOW_SIZE/2)
+
+	if(kg_mathIndex  == (KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2)))
     {
-    	average_series =  ((float) window_sum) / ( (float) values_in_window);
-
-        kg_filtered[nn_current_index - (uint16_t)(KG_WINDOW_SIZE/2)] = ((float)kg_rssi[nn_current_index-( (uint16_t) (KG_WINDOW_SIZE/2) )]) - average_series;
-        average += kg_filtered[nn_current_index - (uint16_t)(KG_WINDOW_SIZE/2)];
-   
-      // LOG_INFO("kg_rssi[%u]: %i\n", nn_current_index - (uint16_t)(KG_WINDOW_SIZE/2), kg_rssi[nn_current_index - (uint16_t)(KG_WINDOW_SIZE/2)]);
-      // LOG_INFO("average_series (*100): %i\n", (int) (average_series * ((float) 100)));
-      // LOG_INFO("filtered value: (*100) %i\n", (int) ( kg_filtered[nn_current_index - (uint16_t)(KG_WINDOW_SIZE/2)] * ((float) 100)));
-    }
-
-    nn_current_index++;
+		kg_currentState = KG_VARIANCE;
+		kg_mathIndex = 0;
+	}
 
     return;
 }
@@ -428,7 +427,7 @@ static float getStdFactor(float input)
 		factor = 0.25;
 	}
 
-	LOG_INFO("factor %i\n", (int)(factor*100.0));
+	LOG_DBG("factor %i\n", (int)(factor*100.0));
 
 	return factor;
 }
@@ -436,10 +435,18 @@ static float getStdFactor(float input)
 
 static void variance()
 {
-	LOG_INFO("variance\n");
+	int i;
+	LOG_DBG("variance\n");
 
     if(kg_mathIndex == 0)
     {
+    	LOG_INFO("kg_rssi:\n");
+    	for(i=0; i<KG_RSSI_SEQ_LEN; i++)
+    	{
+    		printf("%i, ", kg_rssi[i]);
+    	}
+    	printf("\n");
+
     	average = average/( KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2) );
     }
 
@@ -501,7 +508,7 @@ static void key_stretch(void)
 	uint32_t i, the_streched_bit_index, the_bit;
 	uint8_t random_bit, the_stretch, bit_to_or;
 
-	LOG_INFO("key_stretch\n");
+	LOG_DBG("key_stretch\n");
 
     for (i=0; i<(ini_key_len*kg_block_size); i++)
     {
@@ -521,7 +528,6 @@ static void key_stretch(void)
 void initKG_A()
 {
 	uint8_t i;
-
 
 	kg_currentState = KG_COLLECTING_RSSI;
 
@@ -547,8 +553,12 @@ void initKG_A()
 	values_in_window = 0;
 	kg_var = 0;
 
+	kg_mathIndex = 0;
+
+	collectRSSI = 1;
+
 #ifndef KG_RSSI_COLLECT
-	set_rssi_test((uint8_t *)rssi_data_test,100);
+	set_rssi_test((uint8_t *)rssi_data_test,KG_MAX_RSSI_SAMPLES);
 #endif
 
 	kg_plat_init();
@@ -581,13 +591,69 @@ void initKG_B()
 	values_in_window = 0;
 	kg_var = 0;
 
+	kg_mathIndex = 0;
+
 #ifndef KG_RSSI_COLLECT
-	set_rssi_test((uint8_t *)rssi_data_test,100);
+	set_rssi_test((uint8_t *)rssi_data_test,KG_MAX_RSSI_SAMPLES);
 #endif
 
 	kg_plat_init();
 
     return;
+}
+
+
+
+void reInitKG_A()
+{
+    memset(channel_shuffled, 0, KG_CH_SEQ_LEN*sizeof(channel_shuffled[0]));
+	memset(kg_rssi, 0, KG_MAX_RSSI_SAMPLES*sizeof(kg_rssi[0]));
+	memset(kg_filtered, 0, KG_RSSI_SEQ_LEN*sizeof(kg_filtered[0]));
+	memset(quant_rise_ind, 0, KG_RSSI_SEQ_LEN*sizeof(quant_rise_ind[0]));
+    memset(discarded_bits, 0, DISC_BITS_LEN*sizeof(discarded_bits[0]));
+    memset(key_agreed_bits, 0, KG_OUT_KEY_LEN*sizeof(key_agreed_bits[0]));
+    memset(channel_sample, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample[0]));
+    memset(channel_sample_pair, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample_pair[0]));
+    memset(key_stretched, 0, KG_STRETCHED_LEN);
+
+    discard_count_msg = 0;
+    rssi_num_samples = 0;
+    average = 0;
+    window_sum = 0;
+    values_in_window = 0;
+    kg_var = 0;
+
+    kg_mathIndex = 0;
+
+    collectRSSI = 1;
+
+#ifndef KG_RSSI_COLLECT
+	set_rssi_test((uint8_t *)rssi_data_test,KG_MAX_RSSI_SAMPLES);
+#endif
+}
+
+void reInitKG_B()
+{
+    memset(channel_shuffled, 0, KG_CH_SEQ_LEN*sizeof(channel_shuffled[0]));
+	memset(kg_rssi, 0, KG_MAX_RSSI_SAMPLES*sizeof(kg_rssi[0]));
+	memset(kg_filtered, 0, KG_RSSI_SEQ_LEN*sizeof(kg_filtered[0]));
+	memset(quant_rise_ind, 0, KG_RSSI_SEQ_LEN*sizeof(quant_rise_ind[0]));
+    memset(channel_sample, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample[0]));
+    memset(channel_sample_pair, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample_pair[0]));
+    memset(estimate_key, 0, (KG_MAX_INIT_KEY_LEN/KG_BITS_PU)*sizeof(estimate_key[0]));
+
+    key_index_count = 0;
+    rssi_num_samples = 0;
+    average = 0;
+    window_sum = 0;
+    values_in_window = 0;
+    kg_var = 0;
+
+    kg_mathIndex = 0;
+
+#ifndef KG_RSSI_COLLECT
+	set_rssi_test((uint8_t *)rssi_data_test,KG_MAX_RSSI_SAMPLES);
+#endif
 }
 
 
@@ -598,7 +664,7 @@ static void quantize()
 	uint8_t offset, index_value, val;
 	offset = (1<<(KG_Q_BITS-1));
 
-	LOG_INFO("quantize\n");
+	LOG_DBG("quantize\n");
 
     kg_varIterations = 0;
     while(kg_mathIndex<( KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2) ))
@@ -623,6 +689,15 @@ static void quantize()
 
     if(kg_mathIndex == ( KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2) ))
     {   
+
+    	LOG_INFO("Channel sequence\n");
+    	for(chIdx=0; chIdx<KG_CH_SEQ_LEN; chIdx++)
+    	{
+    		print_bin(channel_shuffled[chIdx]);
+    	}
+    	printf("\n");
+
+
     	kg_mathIndex = 0;
     	kg_currentState = KG_SHUFFLE;
     }
@@ -638,7 +713,7 @@ static void mid_rise()
     float k;
     step_size = (limit_up - limit_down) / (1<<KG_Q_BITS);
 
-    LOG_INFO("mid_rise\n");
+    LOG_DBG("mid_rise\n");
 
     kg_varIterations = 0;
     while(kg_mathIndex<( KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2) ))
@@ -682,7 +757,7 @@ static void mid_rise()
 
 static void encode()
 {
-	LOG_INFO("encode ini_key_len %u, kg_block_size %u\n", ini_key_len, kg_block_size);
+	LOG_DBG("encode ini_key_len %u, kg_block_size %u\n", ini_key_len, kg_block_size);
 
     kg_varIterations = 0;
     while(kg_mathIndex < ((ini_key_len*kg_block_size)/KG_BITS_PU))
@@ -833,7 +908,7 @@ static void gen_key()
 {
 	//uint8_t i;
 
-	LOG_INFO("gen_key\n");
+	LOG_DBG("gen_key\n");
 
 	kg_gen_random(NULL, KEY, 16);
 
@@ -851,7 +926,7 @@ static uint8_t look_up_table_A(void)
     float missmatch;
     uint8_t idx, err_sum=0, err_xor, i;
 
-    LOG_INFO("look_up_table_A\n");
+    LOG_DBG("look_up_table_A\n");
 
 
     for (idx=0; idx<KG_SAMPLE_SEQ_LEN; idx++)
@@ -874,12 +949,24 @@ static uint8_t look_up_table_A(void)
 
     missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
+    missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
+
+
+    LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
+
+    if(missmatch > 0.35)
+    {
+    	kg_currentState = KG_COLLECTING_RSSI;
+    	reInitKG_A();
+    	return 0;
+    }
+
 	kg_tau = kgEncParams[KG_NUM_ENC_PARAMS-1].tau;
 	ini_key_len = kgEncParams[KG_NUM_ENC_PARAMS-1].ini_key_len;
 	kg_block_size = kgEncParams[KG_NUM_ENC_PARAMS-1].block_size;
     for(i=0; i<KG_NUM_ENC_PARAMS; i++)
     {
-    	if(missmatch <= kgEncParams[i].nissmatch)
+    	if(missmatch < kgEncParams[i].nissmatch)
     	{
     		kg_tau = kgEncParams[i].tau;
     		ini_key_len = kgEncParams[i].ini_key_len;
@@ -888,8 +975,9 @@ static uint8_t look_up_table_A(void)
     	}
     }
 
-
-    LOG_INFO("missmatch: %i%% ,kg_tau: %i, kg_block_size: %i,ini_key_len: %i\n", (int)(missmatch*100), kg_tau, kg_block_size, ini_key_len);
+    LOG_INFO("kg_tau: %i\n", kg_tau);
+    LOG_INFO("kg_block_size: %i\n", kg_block_size);
+    LOG_INFO("ini_key_len: %i\n", ini_key_len);
 
     // decalre global function based on the parameters
 #ifdef KG_USE_ALLOC
@@ -932,6 +1020,7 @@ static uint8_t look_up_table_A(void)
 
     gen_key();
 
+    kg_currentState = KG_ENCODE;
 
     return 0;
     
@@ -944,7 +1033,7 @@ static void look_up_table_B(void)
     float missmatch;
     uint8_t idx, err_sum=0, err_xor, i;
 
-    LOG_INFO("look_up_table_B\n");
+    LOG_DBG("look_up_table_B\n");
 
     for (idx=0; idx<KG_SAMPLE_SEQ_LEN; idx++)
     {
@@ -966,12 +1055,23 @@ static void look_up_table_B(void)
 
     missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
+    missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
+
+    LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
+
+    if(missmatch > 0.35)
+    {
+    	kg_currentState = KG_COLLECTING_RSSI;
+    	reInitKG_B();
+    	return;
+    }
+
 	kg_tau = kgEncParams[KG_NUM_ENC_PARAMS-1].tau;
 	ini_key_len = kgEncParams[KG_NUM_ENC_PARAMS-1].ini_key_len;
 	kg_block_size = kgEncParams[KG_NUM_ENC_PARAMS-1].block_size;
     for(i=0; i<KG_NUM_ENC_PARAMS; i++)
     {
-    	if(missmatch <= kgEncParams[i].nissmatch)
+    	if(missmatch < kgEncParams[i].nissmatch)
     	{
     		kg_tau = kgEncParams[i].tau;
     		ini_key_len = kgEncParams[i].ini_key_len;
@@ -981,8 +1081,9 @@ static void look_up_table_B(void)
     }
 
 
-    LOG_INFO("missmatch: %i%% ,kg_tau: %i, kg_block_size: %i,ini_key_len: %i\n", (int)(missmatch*100), kg_tau, kg_block_size, ini_key_len);
+    kg_currentState = KG_WAIT_ENCODED_MSG;
 
+    LOG_INFO("kg_tau: %i, kg_block_size: %i,ini_key_len: %i\n", kg_tau, kg_block_size, ini_key_len);
 
 #ifdef KG_USE_ALLOC
     encoded_message = malloc((ini_key_len*kg_block_size/KG_BITS_PU)*sizeof(uint8_t));
@@ -1000,27 +1101,39 @@ static void shuffle()
 {
     uint8_t current_shift, shuffled_shift, shuffled_byte_idx, current_byte_idx, curr_bit, shuffled_bit;
     
-    LOG_INFO("shuffle\n");
+    LOG_DBG("shuffle %u\n", KG_CH_SEQ_LEN*KG_BITS_PU);
 
     kg_varIterations = 0;
-    
-    uint8_t rand_idx[KG_CH_SEQ_LEN*KG_BITS_PU] = {
-    		174, 70, 198, 176, 107, 15, 166, 135, 3, 73, 164, 153, 86, 187, 74, 58, 77, 42, 45, 108,
-    		45, 182, 169, 105, 64, 71, 196, 87, 48, 78, 116, 171, 132, 134, 131, 127, 33, 189, 89, 193,
-			151, 198, 80, 116, 77, 76, 186, 63, 93, 58, 95, 135, 116, 42, 74, 17, 67, 40, 46, 186,
-			147, 7, 184, 86, 184, 162, 60, 161, 173, 98, 11, 170, 89, 72, 4, 96, 169, 105, 2, 106,
-			11, 65, 36, 7, 91, 155, 26, 114, 156, 59, 87, 11, 5, 146, 13, 161, 65, 168, 67, 152,
-			140, 9, 149, 189, 172, 8, 84, 134, 59, 124, 48, 103, 28, 134, 6, 32, 175, 106, 134, 36,
-			51, 74, 133, 93, 126, 137, 1, 141, 148, 166, 198, 173, 102, 93, 181, 193, 153, 130, 97, 24,
-			186, 66, 175, 1, 55, 63, 88, 53, 48, 168, 67, 62, 110, 157, 124, 157, 89, 117,16, 58,
-			146, 135, 43, 132, 51, 6, 105, 37, 105, 180, 165, 132, 143, 87, 36, 86, 117, 108, 34, 24,
-			88, 49, 156, 80, 74, 154, 159, 36, 185, 162, 100,187, 76, 43, 99, 195, 28, 147, 121, 80};
-    
+
+    uint16_t rand_idx[KG_CH_SEQ_LEN*KG_BITS_PU] = {
+    		300, 351, 250, 360, 118, 161, 180, 386, 397, 407, 338, 123, 291, 4, 249, 205, 0, 357, 408, 327,
+			285, 339, 89, 282, 190, 96, 282, 213, 121, 257, 154, 278, 335, 201, 174, 188, 1, 380, 359, 291,
+			145, 319, 122, 329, 330, 104, 375, 391, 342, 7, 90, 212, 345, 333, 386, 373, 266, 92, 102, 69,
+			149, 332, 24, 342, 139, 381, 270, 286, 185, 61, 244, 402, 326, 47, 9, 371, 49, 335, 154, 9, 12,
+			286, 348, 27, 3, 388, 289, 282, 234, 306, 22, 128, 207, 27, 409, 1, 239, 232, 128, 72, 228, 74,
+			167, 398, 114, 153, 189, 1, 75, 211, 119, 185, 8, 398, 52, 43, 321, 216, 184, 22, 379, 214, 183,
+			298, 108, 128, 5, 164, 263, 143, 203, 236, 194, 355, 376, 49, 111, 326, 384, 59, 308, 398, 269,
+			316, 236, 114, 36, 126, 98, 273, 159, 368, 146, 258, 32, 129, 297, 261, 320, 251, 72, 359, 402,
+			232, 171, 112, 3, 62, 289, 118, 73, 31, 143, 365, 103, 219, 279, 288, 366, 115, 153, 283, 385,
+			40, 30, 37, 134, 87, 345, 157, 100, 91, 193, 245, 155, 314, 11, 220, 334, 400, 52, 177, 282, 296,
+			232, 255, 272, 316, 402, 325, 77, 334, 290, 252, 7, 60, 9, 207, 399, 193, 133, 158, 24, 242, 166,
+			204, 60, 71, 191, 55, 16, 405, 287, 201, 345, 182, 300, 179, 412, 181, 326, 50, 64, 2, 183, 398,
+			125, 308, 403, 4, 408, 132, 261, 107, 323, 361, 293, 276, 202, 303, 362, 374, 116, 362, 84, 266,
+			375, 81, 279, 60, 49, 107, 14, 402, 89, 128, 319, 129, 83, 16, 196, 346, 105, 295, 26, 402, 274,
+			182, 55, 170, 52, 150, 95, 36, 353, 153, 31, 262, 374, 297, 182, 295, 253, 59, 10, 18, 291, 32,
+			306, 18, 315, 130, 185, 218, 351, 115, 141, 352, 63, 23, 17, 186, 146, 387, 251, 405, 173, 207,
+			324, 8, 26, 129, 137, 68, 379, 290, 168, 373, 147, 318, 33, 194, 300, 88, 16, 149, 373, 26, 114,
+			309, 111, 36, 259, 100, 368, 385, 225, 277, 203, 61, 92, 134, 277, 208, 127, 275, 22, 351, 27, 381,
+			341, 214, 260, 72, 269, 329, 201, 70, 134, 179, 142, 60, 56, 408, 409, 289, 86, 345, 45, 335, 45,
+			310, 303, 285, 334, 112, 70, 68, 366, 3, 115, 38, 165, 214, 157, 61, 87, 174, 275, 287, 15, 31,
+			20, 138, 172, 109};
+
 
     while (kg_mathIndex<KG_CH_SEQ_LEN*KG_BITS_PU)
     {
         current_byte_idx = (kg_mathIndex/KG_BITS_PU);
         current_shift = (KG_BITS_PU-1) - (kg_mathIndex%KG_BITS_PU);
+
         shuffled_byte_idx = (rand_idx[kg_mathIndex]/KG_BITS_PU);
         shuffled_shift = (KG_BITS_PU-1) - (rand_idx[kg_mathIndex]%KG_BITS_PU);
 
@@ -1029,8 +1142,8 @@ static void shuffle()
 
         if (curr_bit != shuffled_bit)
         {
-            channel_shuffled[current_byte_idx] ^= 1<<current_shift;
-            channel_shuffled[shuffled_byte_idx] ^= 1<<shuffled_shift;
+            channel_shuffled[current_byte_idx] ^= (1<<current_shift);
+            channel_shuffled[shuffled_byte_idx] ^= (1<<shuffled_shift);
         }
 
         kg_mathIndex++;
@@ -1055,55 +1168,7 @@ static void shuffle()
 }
 
 
-void reInitKG_A()
-{
-    memset(channel_shuffled, 0, KG_CH_SEQ_LEN*sizeof(channel_shuffled[0]));
-	memset(kg_rssi, 0, KG_MAX_RSSI_SAMPLES*sizeof(kg_rssi[0]));
-	memset(kg_filtered, 0, KG_RSSI_SEQ_LEN*sizeof(kg_filtered[0]));
-	memset(quant_rise_ind, 0, KG_RSSI_SEQ_LEN*sizeof(quant_rise_ind[0]));
-    memset(discarded_bits, 0, DISC_BITS_LEN*sizeof(discarded_bits[0]));
-    memset(key_agreed_bits, 0, KG_OUT_KEY_LEN*sizeof(key_agreed_bits[0]));
-    memset(channel_sample, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample[0]));
-    memset(channel_sample_pair, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample_pair[0]));
-    memset(key_stretched, 0, KG_STRETCHED_LEN);
 
-    discard_count_msg = 0;
-    rssi_num_samples = 0;
-    average = 0;
-    window_sum = 0;
-    values_in_window = 0;
-    kg_var = 0;
-
-    stop_rssi_collection=0;
-
-#ifndef KG_RSSI_COLLECT
-	set_rssi_test((uint8_t *)rssi_data_test,100);
-#endif
-}
-
-void reInitKG_B()
-{
-    memset(channel_shuffled, 0, KG_CH_SEQ_LEN*sizeof(channel_shuffled[0]));
-	memset(kg_rssi, 0, KG_MAX_RSSI_SAMPLES*sizeof(kg_rssi[0]));
-	memset(kg_filtered, 0, KG_RSSI_SEQ_LEN*sizeof(kg_filtered[0]));
-	memset(quant_rise_ind, 0, KG_RSSI_SEQ_LEN*sizeof(quant_rise_ind[0]));
-    memset(channel_sample, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample[0]));
-    memset(channel_sample_pair, 0, KG_SAMPLE_SEQ_LEN*sizeof(channel_sample_pair[0]));
-    memset(estimate_key, 0, (KG_MAX_INIT_KEY_LEN/KG_BITS_PU)*sizeof(estimate_key[0]));
-
-    key_index_count = 0;
-    rssi_num_samples = 0;
-    average = 0;
-    window_sum = 0;
-    values_in_window = 0;
-    kg_var = 0;
-
-    stop_rssi_collection=0;
-
-#ifndef KG_RSSI_COLLECT
-	set_rssi_test((uint8_t *)rssi_data_test,100);
-#endif
-}
 
 
 
@@ -1138,32 +1203,35 @@ static void assemble_key_A()
         
         if (key_bit_idx==key_seq_len)
         {
-            key_bit_idx = 0;
-            kg_currentState = KG_COLLECTING_RSSI;
-            reInitKG_A();
             break;
         }
     }
 
     LOG_INFO("current_key_index %u\n", current_key_index);
 
+    total_num_ch_sequences += (kg_block_size*ini_key_len);
+
     if (current_key_index==KG_OUT_KEY_LEN)
     {
         kg_currentState = KG_KEY_READY;
-        stop_rssi_collection=1;
 
         LOG_INFO("KEY ready\n");
+
+        for (i=0; i<((uint8_t) (KG_OUT_KEY_LEN/8)); i++){
+        	 print_bin(ready_key[i]);
+        }
+        printf("\n");
+
     }
     else
     {
-    	LOG_INFO("partial key updated\n");
+        kg_currentState = KG_COLLECTING_RSSI;
+        reInitKG_A();
+    	LOG_DBG("partial key updated\n");
     }
 
 
-    for (i=0; i<((uint8_t) (KG_OUT_KEY_LEN/8)); i++){
-    	 print_bin(ready_key[i]);
-    }
-    printf("\n");
+
 }
 
 
@@ -1193,35 +1261,34 @@ static void assemble_key_B()
 
 		if (key_bit_idx==key_index_count)
 		{
-			key_bit_idx = 0;
 			break;
 		}
 	}
 
 	LOG_INFO("current_key_index %u\n", current_key_index);
 
+	total_num_ch_sequences += (kg_block_size*ini_key_len);
+
 	if (current_key_index==KG_OUT_KEY_LEN)
 	{
 		kg_currentState = KG_KEY_READY;
-		stop_rssi_collection=1;
-
 		LOG_INFO("KEY ready\n");
+
+		for (i=0; i<((uint8_t) (KG_OUT_KEY_LEN/8)); i++){
+			print_bin(ready_key[i]);
+		}
+		printf("\n");
 	}
 	else
 	{
 		kg_currentState = KG_COLLECTING_RSSI;
 		reInitKG_B();
-
-		LOG_INFO("partial key updated\n");
+		LOG_DBG("partial key updated\n");
 	}
-
-	for (i=0; i<((uint8_t) (KG_OUT_KEY_LEN/8)); i++){
-		print_bin(ready_key[i]);
-	}
-	printf("\n");
 
 	return;
 }
+
 
 static void sendHash()
 {
@@ -1239,6 +1306,8 @@ static void sendHash()
 static void verifyHash()
 {
 	size_t digest_len = 32;
+	uint16_t numMismatches;
+	float kg_KDR;
 
 	calcHash(ready_key, 16, kg_m_digest, &digest_len);
 
@@ -1249,6 +1318,17 @@ static void verifyHash()
 		LOG_INFO("Hash key different\n");
 	}
 
+	numMismatches = compareStrings(received_ready_key, ready_key, 16);
+
+	kg_KDR = ((float)numMismatches)/((float)KG_OUT_KEY_LEN);
+	LOG_INFO("KDR (*1000) %i\n", (int)(kg_KDR*1000.0));
+
+	kg_KDR = ((float)KG_OUT_KEY_LEN)/((float)total_num_ch_sequences);
+	LOG_INFO("Encoding rate (*1000) %i\n", (int)(kg_KDR*1000.0));
+
+	LOG_INFO("total_num_ch_sequences %lu\n", total_num_ch_sequences);
+
+	total_num_ch_sequences = 0;
 
     //compareStrings(kg_received_digest, kg_m_digest, 32);
 }
@@ -1258,7 +1338,7 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
 {
 	uint8_t msgOut[1024];
 
-	//LOG_INFO("KG_sm_A state %u\n", kg_currentState);
+	LOG_DBG("KG_sm_A state %u\n", kg_currentState);
 
 	if(kg_currentState< KG_SAMPLE){
 		sendMsg(DATA_TRAFFIC_MSG, msgOut, NULL, 0);
@@ -1267,22 +1347,13 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
 	switch(kg_currentState)
 	{
 	case KG_COLLECTING_RSSI:
-
-		//LOG_INFO("rssi_num_samples %u\n", rssi_num_samples);
-
+		LOG_DBG("rssi_num_samples %u\n", rssi_num_samples);
 		nearest_neighbor();
 
-		if(nn_current_index == KG_RSSI_SEQ_LEN)
-        {
-			kg_currentState = KG_VARIANCE;
-            nn_current_index = 0;
-		}
 		break;
-
 	case KG_VARIANCE:
 		variance();
 		break;
-
 	case KG_MID_RISE:
 		mid_rise();
 		break;
@@ -1292,7 +1363,6 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
     case KG_SHUFFLE:
 		shuffle();
 		break;
-
     case KG_SAMPLE:
     	if(sampleSequenceReceived == 1){
     		sampleSequenceReceived = 0;
@@ -1303,20 +1373,12 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
     		LOG_INFO("Waiting sample seq\n");
     	}
 		break;
-
     case KG_TABLE:
-		if(look_up_table_A() != 0){
-            kg_currentState = KG_ERROR;
-        }
-		else{
-			kg_currentState = KG_ENCODE;
-		}
+		look_up_table_A();
 		break;
-
 	case KG_ENCODE:
 		encode();
 		break;
-
 	case KG_ENCODE_READY:
 		sendMsg(ENC_MSG, msgOut, encoded_message, (ini_key_len*kg_block_size/KG_BITS_PU));
 
@@ -1328,7 +1390,6 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
 			kg_currentState = KG_DISCARD;
 		}
 		break;
-
     case KG_DISCARD:
         discard_bits();
         assemble_key_A();
@@ -1362,21 +1423,14 @@ uint8_t KG_sm_B() // has to be change depending on how channel sample is sent
 {
 	uint8_t msgOut[1024];
 
-	//LOG_INFO("KG_sm_B state %u\n", kg_currentState);
+	LOG_DBG("KG_sm_B state %u\n", kg_currentState);
 
 	switch(kg_currentState)
 	{
 	case KG_COLLECTING_RSSI:
-
-		//LOG_INFO("rssi_num_samples %u\n", rssi_num_samples);
-
+		LOG_DBG("rssi_num_samples %u\n", rssi_num_samples);
 		nearest_neighbor();
 
-		if(nn_current_index == KG_RSSI_SEQ_LEN)
-        {
-			kg_currentState = KG_VARIANCE;
-            nn_current_index = 0;
-		}
 		break;
 	case KG_VARIANCE:
 		variance();
@@ -1398,28 +1452,27 @@ uint8_t KG_sm_B() // has to be change depending on how channel sample is sent
     	if(sampleSequenceReceived == 1)
     	{
     		sampleSequenceReceived = 0;
-    		kg_currentState = KG_WAIT_ENCODED_MSG;
+    		kg_currentState = KG_TABLE;
     	}
     	else{
     		LOG_INFO("Waiting sample seq\n");
     	}
 		break;
+    case KG_TABLE:
+        look_up_table_B();
+		break;
     case KG_WAIT_ENCODED_MSG:
     	if(encodeReceived == 1)
     	{
     		encodeReceived = 0;
-    		kg_currentState = KG_TABLE;
+    		kg_currentState = KG_DECODE;
     	}
     	else{
     		LOG_INFO("Waiting encoded msg\n");
     	}
     	break;
-    case KG_TABLE:
-        look_up_table_B();
-        kg_currentState = KG_DECODE;
-		break;
 	case KG_DECODE: // will happen upon receiveing encrypted message from Alice
-                    // and the look-up table being ready. The inteval between receiving
+                    // and the look-up table being ready. The interval between receiving
                     // the encrypted message and the channel sample should be long
                     // enough to assume that once we receive encrypted message look-up
                     // table is already present
@@ -1487,7 +1540,7 @@ uint8_t readMessage(uint8_t *inData, uint16_t dataLen, const uip_ipaddr_t *sende
 		}
 		break;
 	case DATA_TRAFFIC_MSG:
-		rssi_block = inData[0];
+		collectRSSI = inData[1];
 		break;
 	case DISCARD_MSG:
 		LOG_INFO("received DISCARD_MSG len %u\n", dataLen);
@@ -1504,7 +1557,7 @@ uint8_t readMessage(uint8_t *inData, uint16_t dataLen, const uip_ipaddr_t *sende
 		memcpy(kg_received_digest, &inData[1], 32);
 
 		//Temporary patch only for test. Compare ready_key
-		compareStrings(&inData[33], ready_key, 16);
+		memcpy(received_ready_key, &inData[33], 16);
 
 		break;
 	default:
@@ -1525,10 +1578,7 @@ void kg_collect_rssi(uint8_t index, int8_t rssi, uint8_t messageType)
 	//messageType = 0 -> on TSCH Acknowledge
 	//messageType = 1 -> on receiving a message
 
-	static uint8_t index_offset=0;
-	uint8_t rssi_sample_index = 0;
-
-	if( (otherSideConnected == 0) || (stop_rssi_collection==1))
+	if((collectRSSI == 0) && (rssi_num_samples == 0))
 	{
 		return;
 	}
@@ -1539,97 +1589,19 @@ void kg_collect_rssi(uint8_t index, int8_t rssi, uint8_t messageType)
 		return;
 	}
 
-	if(rssi_num_samples == 0)
-	{
-		index_offset = index;
-	}
-
-	if(index >= index_offset){
-		rssi_sample_index = (index - index_offset);
-	}
-	else{
-		rssi_sample_index = (255 - index_offset + index);
-	}
-
+	kg_rssi[(index%KG_RSSI_SEQ_LEN)] = -1*rssi;
 
 	rssi_num_samples++;
-	if((key_gen_head == 1) && (rssi_sample_index>0)){
-		kg_rssi[rssi_sample_index-1] = -1*rssi;
-	}
-	else{
-		kg_rssi[rssi_sample_index] = -1*rssi;
-	}
 
-
-	if(rssi_num_samples == KG_RSSI_SEQ_LEN+1){
-		stop_rssi_collection = 1;
+	if((key_gen_head == 1) && (rssi_num_samples == KG_MAX_RSSI_SAMPLES))
+	{
+		collectRSSI = 0;
 	}
-
 
 	return;
 }
 
-void setOtherSideConnected(uint8_t state)
-{
-	otherSideConnected = state;
-}
 
 
 
-
-#ifdef KG_SOCKET
-uint8_t waitResponse(uint8_t msgType, uint16_t dataLen)
-{
-    uint16_t msgLen = 0;
-    uint8_t valread;
-    uint8_t buffer[2048];
-
-    printf("\nwaitResponse %u\n", msgType);
-
-
-    if(key_gen_head == 1)
-    {
-       // printf("\nwaiting to authenticate server;\n");
-    	if ((kg_sock = accept(kg_fd, (struct sockaddr*)&address, (socklen_t*)&addrlen)) < 0) {
-    		perror("accept");
-    		exit(EXIT_FAILURE);
-    	}
-    }
-    printf("\nwaiting for a new message\n");
-    valread = read(kg_sock, buffer, dataLen);
-
-
-    switch(buffer[0])
-    {
-    case SAMPLE_SEQ_MSG:
-    	printf("Received SAMPLE_SEQ_MSG\n");
-    	memcpy(channel_sample_pair, &buffer[1], KG_SAMPLE_SEQ_LEN);
-        return SAMPLE_SEQ_MSG;
-    	break;
-    case ENC_MSG:
-    	printf("Received ENC_MSG\n");
-    	memcpy(encoded_message, &buffer[1], ini_key_len*kg_block_size/KG_BITS_PU);
-    	break;
-    case DATA_TRAFFIC_MSG:
-    	printf("Received DATA_TRAFFIC_MSG\n");
-    	break;
-    case DISCARD_MSG:
-    	printf("Received DISCARD_MSG\n");
-    	key_seq_len = discarded_bits[1];
-    	discard_count_msg = (uint16_t)discarded_bits[2];
-    	memcpy(discarded_bits, &buffer[3], discard_count_msg);
-
-        return DISCARD_MSG;
-    	break;
-    default:
-
-    	break;
-    }
-
-
-    return 0;
-
-}
-
-#endif
 

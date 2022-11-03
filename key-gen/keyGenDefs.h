@@ -10,20 +10,18 @@
 
 
 
-#define KG_MAX_INIT_KEY_LEN  (1416)
-
-
 #define KG_NUM_ENC_PARAMS (30)
 
 #define KG_BITS_PU (8)
-#define KG_SEQ_SAMPLE_LEN (128)
+#define KG_SEQ_SAMPLE_LEN (64)
 #define KG_Q_BITS  (2)
 #define KG_MAX_BLOCK_SIZE  (22)
+#define KG_MAX_INIT_KEY_LEN  (16)
 
-#define KG_RSSI_LEN ((KG_MAX_BLOCK_SIZE*KG_BITS_PU)/KG_Q_BITS)
+#define KG_RSSI_LEN ((KG_MAX_BLOCK_SIZE*KG_MAX_INIT_KEY_LEN)/KG_Q_BITS)
 
 // number of rssi readings + the channel smaple offset
-#define KG_RSSI_SEQ_LEN (KG_SEQ_SAMPLE_LEN/KG_Q_BITS + KG_RSSI_LEN)
+#define KG_RSSI_SEQ_LEN ((KG_SEQ_SAMPLE_LEN/KG_Q_BITS) + KG_RSSI_LEN)
 #define KG_OUT_KEY_LEN (128)
 #define KG_KEY_SEG_LEN (8)
 #define KG_KEY_SEG_NUM (KG_OUT_KEY_LEN/KG_KEY_SEG_LEN)
