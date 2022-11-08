@@ -133,12 +133,6 @@ extern int kg_sock, kg_fd, addrlen;;
 extern struct sockaddr_in address;
 #endif
 
-/////////////////   encoding & discaring bits  /////////////////
-// to go
-// uint16_t discarded_bits[KG_OUT_KEY_LEN] = {0}; // the length of that array varies based on the length of the inital key
-// to go
-// uint8_t encoded_message[KG_OUT_KEY_LEN*KG_BLOCK_SIZE/KG_BITS_PU]; // the length of that array varies based on the length of the inital key
-
 
 
 static uint16_t discard_count_msg=0;
@@ -435,17 +429,17 @@ static float getStdFactor(float input)
 
 static void variance()
 {
-	int i;
 	LOG_DBG("variance\n");
 
     if(kg_mathIndex == 0)
     {
-    	LOG_INFO("kg_rssi:\n");
+/*    	LOG_INFO("kg_rssi:\n");
+        int i;
     	for(i=0; i<KG_RSSI_SEQ_LEN; i++)
     	{
     		printf("%i, ", kg_rssi[i]);
     	}
-    	printf("\n");
+    	printf("\n");*/
 
     	average = average/( KG_RSSI_SEQ_LEN - (uint16_t)(KG_WINDOW_SIZE/2) );
     }
@@ -757,10 +751,10 @@ static void mid_rise()
 
 static void encode()
 {
-	LOG_DBG("encode ini_key_len %u, kg_block_size %u\n", ini_key_len, kg_block_size);
+	LOG_INFO("encode ini_key_len %u, kg_block_size %u\n", ini_key_len, kg_block_size);
 
     kg_varIterations = 0;
-    while(kg_mathIndex < ((ini_key_len*kg_block_size)/KG_BITS_PU))
+    while(kg_mathIndex < ((ini_key_len*kg_block_size)/KG_BITS_PU) + 1)
     {
         encoded_message[kg_mathIndex] = key_stretched[kg_mathIndex] ^ channel_shuffled[kg_mathIndex + KG_SAMPLE_SEQ_LEN]; // to account for the burned bits
     	kg_mathIndex++;
@@ -771,7 +765,7 @@ static void encode()
     	}
     }
 
-    if(kg_mathIndex == (ini_key_len*kg_block_size/KG_BITS_PU))
+    if(kg_mathIndex == ((ini_key_len*kg_block_size)/KG_BITS_PU) + 1)
     {
         kg_mathIndex = 0;
         kg_currentState = KG_ENCODE_READY;
@@ -802,7 +796,7 @@ static void decode(void)
         the_bit += shifted_bit;
         kg_mathIndex++;
 
-        if (kg_mathIndex%kg_block_size==0 && kg_mathIndex>0)
+        if( ((kg_mathIndex%kg_block_size)==0) && (kg_mathIndex>0))
         {
         	LOG_DBG("the_bit %u\n", the_bit);
 
@@ -842,9 +836,9 @@ static void decode(void)
     	}
     }
 
-    LOG_INFO("ini_key_len %u kg_block_size %u key_index_count %u, discarded_bit_count %u\n", ini_key_len,kg_block_size, key_index_count, discarded_bit_count);
+    LOG_DBG("ini_key_len %u kg_block_size %u key_index_count %u, discarded_bit_count %u\n", ini_key_len,kg_block_size, key_index_count, discarded_bit_count);
 
-    if(kg_mathIndex == ini_key_len*kg_block_size || key_index_count==128)
+    if((kg_mathIndex == (ini_key_len*kg_block_size)) || (key_index_count==128))
     {
         discarded_bits[0] = DISCARD_MSG;
         discarded_bits[1] = key_index_count;
@@ -866,6 +860,11 @@ static void discard_bits()
     uint16_t index_new=0, index_old=0, discarded_count=0;
 
     LOG_INFO("discard_bits key_seq_len %u, discard_count_msg %u\n", key_seq_len, discard_count_msg);
+
+    if(key_seq_len == 0)
+    {
+       return;
+    }
 
     while (index_old< (key_seq_len+discard_count_msg) )
     {
@@ -912,11 +911,6 @@ static void gen_key()
 
 	kg_gen_random(NULL, KEY, 16);
 
-/*    for (i=0; i<16; i++){
-    	 print_bin(KEY[i]);
-    }
-    printf("\n");*/
-
     key_stretch();
 }
 
@@ -924,7 +918,9 @@ static void gen_key()
 static uint8_t look_up_table_A(void)
 {   
     float missmatch;
-    uint8_t idx, err_sum=0, err_xor, i;
+    uint8_t idx, err_xor, i;
+
+    uint16_t err_sum = 0;
 
     LOG_DBG("look_up_table_A\n");
 
@@ -949,7 +945,7 @@ static uint8_t look_up_table_A(void)
 
     missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
-    missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
+    //missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
 
 
     LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
@@ -1055,7 +1051,7 @@ static void look_up_table_B(void)
 
     missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
-    missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
+    //missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
 
     LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
 
@@ -1180,32 +1176,36 @@ static void assemble_key_A()
 
     LOG_INFO("assemble_key_A\n");
 
-    key_bit_idx = 0;
-    while(current_key_index<KG_OUT_KEY_LEN)
+    if(key_seq_len > 0)
     {
-        agreed_key_byte = (uint8_t) (key_bit_idx/KG_BITS_PU);
-        agreed_key_shift = ((KG_BITS_PU-1) - (key_bit_idx%KG_BITS_PU));
-        agreed_key_bit = ( key_agreed_bits[agreed_key_byte]>>agreed_key_shift ) & 1;
-
-        LOG_DBG("key_bit_idx %u\n", key_bit_idx);
-        LOG_DBG("agreed_key_bit %u\n", agreed_key_bit);
-
-        key_byte = (uint8_t) (current_key_index/KG_BITS_PU);
-        key_shift = ((KG_BITS_PU-1) - (current_key_index%KG_BITS_PU));
-
-        LOG_DBG("key_bit_idx %u\n", key_bit_idx);
-        LOG_DBG("key_shift %u\n", key_shift);
-
-        ready_key[key_byte] |= (agreed_key_bit << key_shift);
-
-        current_key_index++;
-        key_bit_idx++;
-        
-        if (key_bit_idx==key_seq_len)
+        key_bit_idx = 0;
+        while(current_key_index<KG_OUT_KEY_LEN)
         {
-            break;
+            agreed_key_byte = (uint8_t) (key_bit_idx/KG_BITS_PU);
+            agreed_key_shift = ((KG_BITS_PU-1) - (key_bit_idx%KG_BITS_PU));
+            agreed_key_bit = ( key_agreed_bits[agreed_key_byte]>>agreed_key_shift ) & 1;
+
+            LOG_DBG("key_bit_idx %u\n", key_bit_idx);
+            LOG_DBG("agreed_key_bit %u\n", agreed_key_bit);
+
+            key_byte = (uint8_t) (current_key_index/KG_BITS_PU);
+            key_shift = ((KG_BITS_PU-1) - (current_key_index%KG_BITS_PU));
+
+            LOG_DBG("key_bit_idx %u\n", key_bit_idx);
+            LOG_DBG("key_shift %u\n", key_shift);
+
+            ready_key[key_byte] |= (agreed_key_bit << key_shift);
+
+            current_key_index++;
+            key_bit_idx++;
+
+            if (key_bit_idx==key_seq_len)
+            {
+                break;
+            }
         }
     }
+
 
     LOG_INFO("current_key_index %u\n", current_key_index);
 
@@ -1380,7 +1380,7 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
 		encode();
 		break;
 	case KG_ENCODE_READY:
-		sendMsg(ENC_MSG, msgOut, encoded_message, (ini_key_len*kg_block_size/KG_BITS_PU));
+		sendMsg(ENC_MSG, msgOut, encoded_message, ((ini_key_len*kg_block_size)/KG_BITS_PU) + 1);
 
 		kg_currentState = KG_WAIT_DISCARDED;
 		break;
