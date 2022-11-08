@@ -3,22 +3,15 @@
 #include <string.h>
 #include <stdint.h>
 
-#ifndef KG_SOCKET
 #include "contiki.h"
 #include "net/ipv6/simple-udp.h"
 #include "sys/log.h"
 #define LOG_MODULE "KG"
 #define LOG_LEVEL LOG_LEVEL_INFO
-#endif
 
 #include "project-conf.h"
-#include "keyGenDefs.h"
 
-#ifdef KG_SOCKET
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#endif
+#include "keyGenDefs.h"
 
 
 
@@ -123,20 +116,11 @@ static float average;
 
 
 
-/////////////////   key generation   /////////////////#
+/////////////////   key generation   /////////////////
 static uint8_t key_index_count = 0;
 
 
-
-#ifdef KG_SOCKET
-extern int kg_sock, kg_fd, addrlen;;
-extern struct sockaddr_in address;
-#endif
-
-
-
 static uint16_t discard_count_msg=0;
-
 
 
 /////////////////  look-up table & send channel sample  ///////////////////
@@ -165,17 +149,6 @@ struct simple_udp_connection kg_udp_conn;
 static uip_ipaddr_t kg_dest_ipaddr;
 
 
-#ifdef KG_USE_ALLOC
-
-uint16_t* discarded_bits=NULL;
-uint8_t* encoded_message=NULL;
-uint16_t* disc_bits_msg=NULL;
-uint8_t* estimate_key=NULL;
-uint8_t* key_stretched=NULL;
-uint8_t* KEY=NULL;
-
-#else
-
 static uint8_t discarded_bits[DISC_BITS_LEN];
 static uint8_t  encoded_message[KG_ENC_LEN];
 static uint8_t  KEY[SOURCE_KEY_LEN];
@@ -183,8 +156,6 @@ static uint8_t key_stretched[KG_STRETCHED_LEN];
 static uint8_t estimate_key[((KG_MAX_INIT_KEY_LEN/KG_BITS_PU))];
 
 static uint8_t key_agreed_bits[KG_OUT_KEY_LEN];
-
-#endif
 
 
 
@@ -302,18 +273,7 @@ static void sendMsg(uint8_t msgType, uint8_t *msgOut, uint8_t *inData, uint16_t 
     	break;
     }
 
-
-#ifdef KG_SOCKET
-	send(kg_sock, msgOut, msgLen, 0);
-#else
 	simple_udp_sendto(&kg_udp_conn, msgOut, msgLen, &kg_dest_ipaddr);
-#endif
-
-/*	LOG_INFO("send msg %x len %u\n", msgType, msgLen);
-
-	LOG_INFO("to ");
-	LOG_INFO_6ADDR(&kg_dest_ipaddr);
-	LOG_INFO_("\n");*/
 
 }
 
@@ -494,7 +454,8 @@ void index2binary(int8_t value)
 /*
 byte of the stretched key array: the_streched_bit_index
 the byte of the initial key: the_bit (awful name)
-the bit that is to be added to the key stertched: random_bit (it counts how many times a certain bit has to be repeated and then shifts for the bit to be extracted from the initial key)
+the bit that is to be added to the key stertched: random_bit (it counts how many times a certain bit has to be repeated and then shifts
+for the bit to be extracted from the initial key)
 the_stretch - counts the number of bits that were added to one byte of the stretched key array it resets when we move to a new byte
 */
 static void key_stretch(void)
@@ -945,12 +906,9 @@ static uint8_t look_up_table_A(void)
 
     missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
-    //missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
-
-
     LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
 
-    if(missmatch > 0.35)
+    if(missmatch > kgEncParams[KG_NUM_ENC_PARAMS-1].nissmatch)
     {
     	kg_currentState = KG_COLLECTING_RSSI;
     	reInitKG_A();
@@ -974,45 +932,6 @@ static uint8_t look_up_table_A(void)
     LOG_INFO("kg_tau: %i\n", kg_tau);
     LOG_INFO("kg_block_size: %i\n", kg_block_size);
     LOG_INFO("ini_key_len: %i\n", ini_key_len);
-
-    // decalre global function based on the parameters
-#ifdef KG_USE_ALLOC
-    discarded_bits = malloc(ini_key_len);
-    if(discarded_bits==NULL)
-    {
-        LOG_ERR("Failed malloc: discarded_bits\n");
-        return 1;
-    } 
-
-    encoded_message = malloc((ini_key_len*kg_block_size/KG_BITS_PU)*sizeof(uint8_t));
-    if(encoded_message==NULL)
-    {
-    	LOG_ERR("Failed malloc: encoded_message\n");
-        return 1;
-    } 
-
-    KEY = malloc((ini_key_len/KG_BITS_PU)*sizeof(uint8_t));
-    if(KEY==NULL)
-    {
-    	LOG_ERR("Failed malloc: KEY\n");
-        return 1;
-    } 
-
-/*    disc_bits_msg = malloc(ini_key_len*sizeof(uint16_t));
-    if(disc_bits_msg==NULL)
-    {
-    	LOG_ERR("Failed malloc: disc_bits_msg\n");
-        return 1;
-    } */
-
-    key_stretched = malloc((ini_key_len*kg_block_size/KG_BITS_PU)*sizeof(uint8_t));
-    if(key_stretched==NULL)
-    {
-    	LOG_ERR("Failed malloc: key_stretched\n");
-        return 1;
-    } 
-#endif
-
 
     gen_key();
 
@@ -1051,11 +970,9 @@ static void look_up_table_B(void)
 
     missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
-    //missmatch += 0.0156; // Add minimum resolution of the calculation 1/KG_SEQ_SAMPLE_LEN
-
     LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
 
-    if(missmatch > 0.35)
+    if(missmatch > kgEncParams[KG_NUM_ENC_PARAMS-1].nissmatch)
     {
     	kg_currentState = KG_COLLECTING_RSSI;
     	reInitKG_B();
@@ -1081,13 +998,6 @@ static void look_up_table_B(void)
 
     LOG_INFO("kg_tau: %i, kg_block_size: %i,ini_key_len: %i\n", kg_tau, kg_block_size, ini_key_len);
 
-#ifdef KG_USE_ALLOC
-    encoded_message = malloc((ini_key_len*kg_block_size/KG_BITS_PU)*sizeof(uint8_t));
-
-    discarded_bits = malloc((ini_key_len+3)*sizeof(uint16_t));
-
-    estimate_key = malloc((ini_key_len/KG_BITS_PU)*sizeof(uint8_t));
-#endif
 }
 
 
@@ -1230,8 +1140,6 @@ static void assemble_key_A()
     	LOG_DBG("partial key updated\n");
     }
 
-
-
 }
 
 
@@ -1330,13 +1238,12 @@ static void verifyHash()
 
 	total_num_ch_sequences = 0;
 
-    //compareStrings(kg_received_digest, kg_m_digest, 32);
 }
 
 
-uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
+uint8_t KG_sm_A()
 {
-	uint8_t msgOut[1024];
+	uint8_t msgOut[256];
 
 	LOG_DBG("KG_sm_A state %u\n", kg_currentState);
 
@@ -1419,9 +1326,9 @@ uint8_t KG_sm_A() // has to be change depending on how channel sample is sent
 
 
 
-uint8_t KG_sm_B() // has to be change depending on how channel sample is sent
+uint8_t KG_sm_B()
 {
-	uint8_t msgOut[1024];
+	uint8_t msgOut[256];
 
 	LOG_DBG("KG_sm_B state %u\n", kg_currentState);
 
@@ -1478,7 +1385,6 @@ uint8_t KG_sm_B() // has to be change depending on how channel sample is sent
                     // table is already present
 		decode();
 
-		//In this case the length of the message is inside the array, we do not use the last parameter
 		sendMsg(DISCARD_MSG, msgOut, (uint8_t *)discarded_bits, 0);
 		break;
     case KG_ASSEMBLE:
@@ -1549,7 +1455,6 @@ uint8_t readMessage(uint8_t *inData, uint16_t dataLen, const uip_ipaddr_t *sende
 		discard_count_msg = (uint16_t)inData[2];
 		memcpy(discarded_bits, &inData[3], discard_count_msg);
 
-		//LOG_DBG("key_seq_len %u discard_count_msg %u\n", key_seq_len, discard_count_msg);
 		break;
 	case KEY_READY_HASH_MSG:
 		LOG_INFO("received KEY_READY_HASH_MSG len %u\n", dataLen);
@@ -1567,8 +1472,6 @@ uint8_t readMessage(uint8_t *inData, uint16_t dataLen, const uip_ipaddr_t *sende
 
 	return 0;
 }
-
-
 
 
 
