@@ -10,28 +10,14 @@ Platform independent
 
 # Download 
 
-Clone the repository's code as a submodule, under contiki-ng/contiki-ng/examples/ 
-
+Clone the repository's code as a submodule under contiki-ng
 ```
-git clone https://github.com/fraimondo18/cricket.git
+git submodule add  https://github.com/fraimondo18/cricket.git  examples/cricket
 ```
-
-
-
 
 
 
 
 # Getting started
 
-Run an example that reads in a MATLAB file of RSSI values to generate a bit string sequence and subsequently test using several of the 15 different randomness tests in the testsuite.
 
-```
-python genkeys.py ./skyglow/Scenario2-Office-LoS/data3_upto5.mat 0.5 0.1
-```
-
-Plot Alice and Bob's RSSI sequences, processed sequences, and final bit sequence.
-
-```
-python analyze.py ./skyglow/Scenario2-Office-LoS/data3_upto5.mat 4096 0.4 0.05
-```
