@@ -881,7 +881,7 @@ static void gen_key()
 
 static uint8_t look_up_table_A(void)
 {   
-    float missmatch;
+    float mismatch;
     uint8_t idx, err_xor, i;
 
     uint16_t err_sum = 0;
@@ -907,11 +907,11 @@ static uint8_t look_up_table_A(void)
     printf("  errsum: %i\n", err_sum);
 #endif
 
-    missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
+    mismatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
-    LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
+    LOG_INFO("mismatch: %i%%\n", (int)(mismatch*100));
 
-    if(missmatch > kgEncParams[KG_NUM_ENC_PARAMS-1].nissmatch)
+    if(mismatch > kgEncParams[KG_NUM_ENC_PARAMS-1].mismatch)
     {
     	kg_currentState = KG_COLLECTING_RSSI;
     	reInitKG_A();
@@ -923,7 +923,7 @@ static uint8_t look_up_table_A(void)
 	kg_block_size = kgEncParams[KG_NUM_ENC_PARAMS-1].block_size;
     for(i=0; i<KG_NUM_ENC_PARAMS; i++)
     {
-    	if(missmatch < kgEncParams[i].nissmatch)
+    	if(mismatch < kgEncParams[i].mismatch)
     	{
     		kg_tau = kgEncParams[i].tau;
     		ini_key_len = kgEncParams[i].ini_key_len;
@@ -948,7 +948,7 @@ static uint8_t look_up_table_A(void)
 
 static void look_up_table_B(void)
 {
-    float missmatch;
+    float mismatch;
     uint8_t idx, err_sum=0, err_xor, i;
 
     LOG_DBG("look_up_table_B\n");
@@ -971,11 +971,11 @@ static void look_up_table_B(void)
     printf("  errsum: %i\n", err_sum);
 #endif
 
-    missmatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
+    mismatch = ( (float) err_sum)/ ((float) KG_SEQ_SAMPLE_LEN);
 
-    LOG_INFO("missmatch: %i%%\n", (int)(missmatch*100));
+    LOG_INFO("mismatch: %i%%\n", (int)(mismatch*100));
 
-    if(missmatch > kgEncParams[KG_NUM_ENC_PARAMS-1].nissmatch)
+    if(mismatch > kgEncParams[KG_NUM_ENC_PARAMS-1].mismatch)
     {
     	kg_currentState = KG_COLLECTING_RSSI;
     	reInitKG_B();
@@ -987,7 +987,7 @@ static void look_up_table_B(void)
 	kg_block_size = kgEncParams[KG_NUM_ENC_PARAMS-1].block_size;
     for(i=0; i<KG_NUM_ENC_PARAMS; i++)
     {
-    	if(missmatch < kgEncParams[i].nissmatch)
+    	if(mismatch < kgEncParams[i].mismatch)
     	{
     		kg_tau = kgEncParams[i].tau;
     		ini_key_len = kgEncParams[i].ini_key_len;
@@ -1206,7 +1206,7 @@ static void sendHash()
 	size_t digest_len = 32;
 	uint8_t msgOut[128];
 
-	calcHash(ready_key, 16, kg_m_digest, &digest_len);
+	kg_calcHash(ready_key, 16, kg_m_digest, &digest_len);
 
 	sendMsg(KEY_READY_HASH_MSG, msgOut, kg_m_digest, 32);
 
@@ -1220,7 +1220,7 @@ static void verifyHash()
 	uint16_t numMismatches;
 	float kg_KDR;
 
-	calcHash(ready_key, 16, kg_m_digest, &digest_len);
+	kg_calcHash(ready_key, 16, kg_m_digest, &digest_len);
 
 	if(memcmp(kg_received_digest, kg_m_digest, 32) == 0){
 		LOG_INFO("Hash key correct\n");

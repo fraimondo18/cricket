@@ -43,7 +43,7 @@ int kg_gen_random(void *p_rng, unsigned char *output, size_t output_len)
 	return 0;
 }
 
-void calcHash(uint8_t *inData, uint8_t dataLen, uint8_t *outData, size_t *outDataLen)
+void kg_calcHash(uint8_t *inData, uint8_t dataLen, uint8_t *outData, size_t *outDataLen)
 {
 
 	return;

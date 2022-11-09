@@ -88,7 +88,7 @@ typedef enum keyGen_SM
 
 typedef struct kgEncodeParams
 {
-	float nissmatch;
+	float mismatch;
 	uint8_t block_size;
 	uint8_t tau;
 	uint8_t ini_key_len;
@@ -104,10 +104,10 @@ uint8_t KG_sm_B(void);
 uint8_t waitResponse(uint8_t msgType, uint16_t dataLen);
 uint8_t readMessage(uint8_t *inData, uint16_t dataLen, const uip_ipaddr_t *sender_addr);
 void set_address(const uip_ipaddr_t *ipaddr, struct simple_udp_connection *conn);
+
 void kg_plat_init();
 int kg_gen_random(void *p_rng, unsigned char *output, size_t output_len);
-void calcHash(uint8_t *inData, uint8_t dataLen, uint8_t *outData, size_t *outDataLen);
-void setOtherSideConnected(uint8_t state);
+void kg_calcHash(uint8_t *inData, uint8_t dataLen, uint8_t *outData, size_t *outDataLen);
 
 /*---------------------------------------------------------------------------*/
 #endif /* KEY_GEN_DEFS_H_ */
