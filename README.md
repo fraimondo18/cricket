@@ -6,6 +6,8 @@ The implementation can be extended to other platforms supported by contiki-ng. S
 
 ![Alt text](res/cricketDiagram.PNG?raw=true "Cricket algorithm steps")
 
+<img src="https://github.com/fraimondo18/cricket/blob/main/res/cricketDiagram.PNG" width=50% height=50%>
+
 # Download 
 
 Clone the repository's code as a submodule under contiki-ng
