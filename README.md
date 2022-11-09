@@ -31,7 +31,7 @@ Information derived during the experiment will be logged, including:
 
 
 
-## Process data offline
+# Process data offline
 
 To extract the results of the experiment, use the python script: cricketProcessResults.py
 This will generate a csv file containing the results for each experiment.
