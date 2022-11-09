@@ -4,7 +4,7 @@ Implementation of the CRicKET algorithm, that can be built and executed under th
 The example can be executed on Cooja or on the nrf52840 DK/dongle.
 The implementation can be extended to other platforms supported by contiki-ng. See the section 'Execute on different platforms' below.
 
-
+![Alt text](res/cricketDiagram.PNG?raw=true "Cricket algorithm steps")
 
 # Download 
 
