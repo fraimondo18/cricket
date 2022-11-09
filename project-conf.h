@@ -11,7 +11,7 @@
 #define UIP_CONF_BUFFER_SIZE  140
 #endif
 
-
+#define APP_BASE_PERIOD (3)
 
 #define LOG_CONF_LEVEL_IPV6                        LOG_LEVEL_NONE
 #define LOG_CONF_LEVEL_RPL                         LOG_LEVEL_NONE

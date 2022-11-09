@@ -72,7 +72,7 @@ PROCESS_THREAD(udp_server_process, ev, data)
 
 		KG_sm_B();
 
-		etimer_set(&periodic_timer, 2 * CLOCK_SECOND);
+		etimer_set(&periodic_timer, APP_BASE_PERIOD * CLOCK_SECOND);
 
 	}
 

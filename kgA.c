@@ -17,7 +17,7 @@
 #define UDP_CLIENT_PORT	8765
 #define UDP_SERVER_PORT	5678
 
-#define SEND_INTERVAL		  (10 * CLOCK_SECOND)
+#define SEND_INTERVAL		  (APP_BASE_PERIOD * CLOCK_SECOND)
 
 
 static uint8_t dest_addr_set = 0;
@@ -77,7 +77,7 @@ PROCESS_THREAD(udp_client_process, ev, data)
 			LOG_INFO("Not reach\n");
 		}
 		
-		etimer_set(&periodic_timer, 2 * CLOCK_SECOND);
+		etimer_set(&periodic_timer, SEND_INTERVAL + ((random_rand() % (2 * CLOCK_SECOND)) - CLOCK_SECOND )  );
 	}
 
 

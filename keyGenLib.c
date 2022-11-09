@@ -208,6 +208,9 @@ static uint16_t compareStrings(uint8_t *string1, uint8_t *string2, uint8_t len)
 
 
 #ifndef KG_RSSI_COLLECT
+static int r_factor = 3;
+static int numExperiments = 0;
+
 static void set_rssi_test(uint8_t *data, uint16_t len)
 {
 	uint16_t i;
@@ -215,7 +218,7 @@ static void set_rssi_test(uint8_t *data, uint16_t len)
 
 	for(i=0; i< len; i++)
 	{
-		r_val = ((rand() % 3) / 2);
+		r_val = ((rand() % r_factor) / 2);
 		if(r_val%2){
 			r_val = (-1) * r_val;
 		}
@@ -1312,6 +1315,16 @@ uint8_t KG_sm_A()
             reInitKG_A();
             memset(ready_key, 0, KG_OUT_KEY_LEN*sizeof(ready_key[0]));
             current_key_index=0;
+
+#ifndef KG_RSSI_COLLECT
+            numExperiments++;
+            if((numExperiments % 4) == 0){
+                r_factor++;
+                if(r_factor == 7){
+                	r_factor = 3;
+                }
+            }
+#endif
     	}
     	else{
     		LOG_INFO("Waiting hash\n");
@@ -1401,6 +1414,16 @@ uint8_t KG_sm_B()
             reInitKG_B();
             memset(ready_key, 0, KG_OUT_KEY_LEN*sizeof(ready_key[0]));
             current_key_index=0;
+
+#ifndef KG_RSSI_COLLECT
+            numExperiments++;
+            if((numExperiments % 4) == 0){
+                r_factor++;
+                if(r_factor == 7){
+                	r_factor = 3;
+                }
+            }
+#endif
     	}
     	else{
     		LOG_INFO("Waiting hash\n");
