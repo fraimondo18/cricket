@@ -37,13 +37,16 @@ def main():
     chSeqBigStr = ''
     chRssiBigStr = ''
     minInvBlkSize = 1000
+    maxInvBlkSize = 0
     max_n = 0
     
     
-    csvFileName = 'testAlice.csv'
-    meanCsvfile = 'meanValuesAlice.csv'
-    fileList = ['kgA_0411.txt']
-    
+    whichDevice = 'Alice'
+    csvFileName = 'test'+ whichDevice + '.csv'
+    meanCsvfile = 'meanValues'+ whichDevice + '.csv'
+    fileList = ['kgA_0411.txt','kgA_0711.txt','kgA_0811_p2.txt','kgA_0811.txt','kgA_0911_day.txt','kgA_0911.txt','kgA_1011.txt']
+    #fileList = ['kgB_0411.txt','kgB_0711.txt','kgB_0811.txt','kgB_0911_day.txt','kgB_0911.txt']
+  
     
     # Only for Cooja log files
     #for fName in fileList:
@@ -83,7 +86,10 @@ def main():
                    
                     if((1/bSize)<minInvBlkSize):
                         minInvBlkSize = (1/bSize)
-                        
+                    
+                    if((1/bSize)>maxInvBlkSize):
+                        maxInvBlkSize = (1/bSize)
+                            
                     totalBlockSize = totalBlockSize + bSize
                     if invBlockSize == 0:
                         invBlockSize = 1/bSize
@@ -108,12 +114,14 @@ def main():
                     ape, passed = ApproximateEntropy.approximate_entropy_test(chSeqBigStr)
                     experimentInfo['ape'] = ape
                     experimentInfo['mininvBlkSize'] = minInvBlkSize
+                    experimentInfo['maxinvBlkSize'] = maxInvBlkSize
                     experimentInfo['chMismatch'] = np.mean(chMismatchList)
                     
                     chMismatchList = list()
                     chSeqBigStr = ''
                     chRssiBigStr = ''
                     minInvBlkSize = 1000
+                    maxInvBlkSize = 0
                     totalBlockSize = 0
                     numBlkSize = 0
                     invBlockSize = 0
@@ -140,8 +148,21 @@ def main():
                     experimentInfo['num_ch_sequences'] = int(line[wordEndIndex:])
                     experimentList.append(experimentInfo)
                     chSeqList = list()
-        
-
+       
+    
+       
+    # Removelow entropy experiments 
+    expCount=0
+    experimentListFiltered = list()
+    for expItem in experimentList:
+        for k, v in expItem.items():
+            if k == 'ape':
+                if v > 0.3:
+                    expCount = expCount + 1
+                    expItem['index'] = expCount
+                    experimentListFiltered.append(expItem)
+                    break
+                
                 
     expCount=0
     blkSizeList = list()
@@ -151,6 +172,7 @@ def main():
     chMismatchList = list() 
     apeList = list() 
     minInvNList = list()
+    maxInvNList = list()
     numChSeqList = list()
     csvHeader = list()
     writeHeader = 1
@@ -158,7 +180,7 @@ def main():
     try:
         with open(csvFileName, mode='w') as data_file:
             data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)     
-            for expItem in experimentList:
+            for expItem in experimentListFiltered:
                 expCount = expCount + 1
                 dataItem = list()
                 for k, v in expItem.items():
@@ -176,6 +198,10 @@ def main():
                         csvHeader.append('min(1/n)')
                         dataItem.append("%.3f" % v)
                         minInvNList.append(v)
+                    if k == 'maxinvBlkSize':
+                        csvHeader.append('max(1/n)')
+                        dataItem.append("%.3f" % v)
+                        maxInvNList.append(v)
                     if k == 'encodingRate':
                         csvHeader.append('R')
                         encRateList.append(v)
