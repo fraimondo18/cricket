@@ -30,6 +30,7 @@ def main():
     
     chSeqList = list()
     experimentList = list()
+    invBlkSizeList = list()
     chMismatchList = list()
     totalBlockSize = 0
     invBlockSize = 0
@@ -83,7 +84,9 @@ def main():
                 if line.find(word1) != -1 and (line.find(word2) != -1 or line.find(word3) != -1):
                     wordEndIndex = line.index(word1) + len(word1)
                     bSize = int(line[wordEndIndex:])
-                   
+                    
+                    invBlkSizeList.append(1/bSize)
+                    
                     if((1/bSize)<minInvBlkSize):
                         minInvBlkSize = (1/bSize)
                     
@@ -116,7 +119,10 @@ def main():
                     experimentInfo['mininvBlkSize'] = minInvBlkSize
                     experimentInfo['maxinvBlkSize'] = maxInvBlkSize
                     experimentInfo['chMismatch'] = np.mean(chMismatchList)
+                    experimentInfo['invBlkSizeList'] = invBlkSizeList
+                    experimentInfo['rounds'] = numBlkSize
                     
+                    invBlkSizeList = list()
                     chMismatchList = list()
                     chSeqBigStr = ''
                     chRssiBigStr = ''
@@ -151,17 +157,25 @@ def main():
        
     
        
+       
+       
+       
+       
     # Removelow entropy experiments 
     expCount=0
     experimentListFiltered = list()
     for expItem in experimentList:
         for k, v in expItem.items():
             if k == 'ape':
-                if v > 0.3:
+                if v > 0.4:
                     expCount = expCount + 1
                     expItem['index'] = expCount
                     experimentListFiltered.append(expItem)
                     break
+              
+              
+              
+              
                 
                 
     expCount=0
@@ -227,14 +241,24 @@ def main():
                         invBlkSizeList.append(v)
                         csvHeader.append('E[1/n]')
                         dataItem.append("%.3f" % v)
+                    if k == 'rounds':
+                        csvHeader.append('rounds')
+                        dataItem.append(v)
                     if k == 'max_n':
                         csvHeader.append('max(n)')
                         dataItem.append(v)
+                    if k == 'invBlkSizeList':
+                        csvHeader.append('num_over')
+                        cnt=0
+                        for invBSize in v:
+                            if invBSize > expItem['ape']:
+                                cnt = cnt + 1
+                        dataItem.append(cnt)
                 if writeHeader == 1:
                     data_writer.writerow(csvHeader)
                     writeHeader = 0
-                if ape > 0.3:
-                    data_writer.writerow(dataItem)
+                
+                data_writer.writerow(dataItem)
                 
     except OSError:
         print('IO file error, discarding sample')            
