@@ -1,14 +1,16 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "Raimondo"
-  given-names: "Francesco"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
-- family-names: "Lisa"
-  given-names: "Mona"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
+- family-names: "Paschou"
+  given-names: "Chrys"
+  orcid: "https://orcid.org/0000-0002-7170-581"
+- family-names: "Francesco"
+  given-names: "Raimondo"
+  orcid: "https://orcid.org/0000-0003-2086-7210"
+- family-names: "Michael"
+  given-names: "Gugala"
 title: "cricket"
-version: 1.0.0
+version: 1.2.0
 doi: 10.5281/zenodo.1234
 date-released: 2022-11-11
 url: "https://github.com/fraimondo18/cricket"
